@@ -45,5 +45,7 @@ class PlayerTracker:
                 
                 if cls_id == cls_names_inv['player']:
                     tracks[frame_num][track_id] = {"box": bbox}
-                    
+
+        save_stubs(stubs_path = stubs_path, object = tracks)
+
         return tracks
