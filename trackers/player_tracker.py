@@ -44,7 +44,7 @@ class PlayerTracker:
                 track_id = frame_detection[4] # 4 is the index for track id in the detection tuple, e.g., ((x1, y1), (x2, y2), conf, cls_id, track_id)
                 
                 if cls_id == cls_names_inv['player']:
-                    tracks[frame_num][track_id] = {"box": bbox}
+                    tracks[frame_num][track_id] = {"bbox": bbox}
 
         save_stubs(stubs_path = stubs_path, object = tracks)
 
