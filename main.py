@@ -1,5 +1,9 @@
 from utils import read_video, save_video
 from trackers import PlayerTracker
+from drawers import (
+    PlayerTracksDrawer
+)
+
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -23,10 +27,19 @@ def main():
                                                      read_from_stubs=True,
                                                      stubs_path=stubs_path
                                                      )
-    print(player_tracks)  
+     
+    # Draw Output
+    # Initialize Drawer
+    player_tracks_drawer = PlayerTracksDrawer()
+    
+    # Draw Player Tracks
+    output_video_frames = player_tracks_drawer.draw(
+        video_frames=video_frame,
+        tracks=player_tracks
+    )
 
     # Save Video
-    save_video(video_frame, fps, output_path)
+    save_video(output_video_frames, fps, output_path)
 
 if __name__ == "__main__":
     main()
