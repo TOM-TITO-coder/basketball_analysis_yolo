@@ -35,6 +35,10 @@ def main():
                                                  read_from_stubs=True,
                                                  stubs_path=ball_stubs_path
                                                  )
+    # Remove wrong ball detections
+    ball_tracks = ball_tracker.remove_wrong_detections(ball_tracks)
+    # Interpolate ball tracks
+    ball_tracks = ball_tracker.interpolate_ball_positions(ball_tracks)
      
     # Draw Output
     # Initialize Drawer
