@@ -92,7 +92,7 @@ class BallTracker:
         
         # Interpolate missing values
         df_ball_positions = df_ball_positions.interpolate()
-        df_ball_positions = df_ball_positions.bfill()
+        df_ball_positions = df_ball_positions.bfill()    # Backfill: ex: if first few frames are missing, fill them with the next available value.
         
         ball_positions = [{1: {"bbox": x}} for x in df_ball_positions.to_numpy().tolist()]
         
