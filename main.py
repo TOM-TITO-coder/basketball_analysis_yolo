@@ -4,6 +4,7 @@ from drawers import (
     PlayerTracksDrawer,
     BallTracksDrawer
 )
+from team_assigner import TeamAssigner
 
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -18,6 +19,7 @@ def main():
     output_path = 'D:/ShelfStudy/AI Engineer/Computer_Vision/basketball_analysis/basketball_analysis/output_videos/output_v1.mp4'
     player_stubs_path = 'D:/ShelfStudy/AI Engineer/Computer_Vision/basketball_analysis/basketball_analysis/stubs/player_track_stubs.pkl'
     ball_stubs_path = 'D:/ShelfStudy/AI Engineer/Computer_Vision/basketball_analysis/basketball_analysis/stubs/ball_track_stubs.pkl'
+    team_assignment_stubs_path = 'D:/ShelfStudy/AI Engineer/Computer_Vision/basketball_analysis/basketball_analysis/stubs/team_assignment_stubs.pkl'
 
     # Read Video
     video_frame, fps = read_video(video_path)
@@ -39,7 +41,16 @@ def main():
     ball_tracks = ball_tracker.remove_wrong_detections(ball_tracks)
     # Interpolate ball tracks
     ball_tracks = ball_tracker.interpolate_ball_positions(ball_tracks)
-     
+    
+    # Assign Player Teams
+    team_assigner = TeamAssigner()
+    player_assignment = team_assigner.get_player_teams_across_frames(
+        video_frames=video_frame,
+        player_trackers=player_tracks,
+        read_from_stub=True,
+        stub_path=team_assignment_stubs_path
+    )
+    
     # Draw Output
     # Initialize Drawer
     player_tracks_drawer = PlayerTracksDrawer()
@@ -48,7 +59,8 @@ def main():
     # Draw Player Tracks
     output_video_frames = player_tracks_drawer.draw(
         video_frames=video_frame,
-        tracks=player_tracks
+        tracks=player_tracks,
+        player_assignment=player_assignment
     )
     # Draw Ball Tracks
     output_video_frames = ball_tracks_drawer.draw(
