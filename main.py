@@ -5,6 +5,7 @@ from drawers import (
     BallTracksDrawer
 )
 from team_assigner import TeamAssigner
+from ball_acquisition import BallAcquisitionDetector
 
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -51,6 +52,11 @@ def main():
         stub_path=team_assignment_stubs_path
     )
     
+    # Ball Acquisition
+    ball_acquisition_detector = BallAcquisitionDetector()
+    ball_possession = ball_acquisition_detector.detect_ball_possession(player_tracks, ball_tracks)
+    
+    print(f"Ball Possession: {ball_possession}")
     # Draw Output
     # Initialize Drawer
     player_tracks_drawer = PlayerTracksDrawer()
@@ -60,7 +66,8 @@ def main():
     output_video_frames = player_tracks_drawer.draw(
         video_frames=video_frame,
         tracks=player_tracks,
-        player_assignment=player_assignment
+        player_assignment=player_assignment,
+        ball_acquisition=ball_possession
     )
     # Draw Ball Tracks
     output_video_frames = ball_tracks_drawer.draw(
